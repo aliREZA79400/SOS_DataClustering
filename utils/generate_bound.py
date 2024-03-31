@@ -1,19 +1,27 @@
 import numpy as np
-import data
 from mealpy.utils.space import FloatVar
-import validators
+import os 
+import sys
+# Get the parent directory
+parent_dir = os.path.dirname(os.path.realpath("utils"))
 
-dataset , target = data.retu_dataset()
+# Add the parent directory to sys.path
+sys.path.append(parent_dir)
 
-data_sorted = np.sort(dataset, axis=0)
+from utils import validators
 
-def genearte(K:int):
+def generate(K:int,dataset:None):
     '''
     Args:
     K = number of clusters
     '''
 
-    K = validators(int)
+    validators.validate_integer(arg_name="number of clusters",
+                                arg_value=K,
+                                min_value=2,
+                                max_value=10)
+
+    data_sorted = np.sort(dataset, axis=0)
 
     lbs = data_sorted[0:K,:]
 
@@ -25,7 +33,7 @@ def genearte(K:int):
     bounds = [FloatVar(lb = [lbs[j][i] for i in range(m)] , ub=[ubs[j][i] for i in range(m)])
              for j in range(K)]
     
-    return bounds , dataset , target
+    return bounds
 
 
 
