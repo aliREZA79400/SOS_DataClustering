@@ -16,7 +16,7 @@ def saver_model(model,save_path:str):
         
         save_path (str)
     """
-    save_path = ValidType(str)
+    
     io.save_model(model=model,path_save=save_path)
 
 def loader_model(loaded_path:str):
