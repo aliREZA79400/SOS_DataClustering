@@ -19,7 +19,7 @@ pandas==2.2.1
 
 2. Create enviromet and install the required Python packages
 
-3. Change directory to ADCSOS/SOS
+3. Change directory to SOS
 
 4. python3 main.py --help (for help)
 
