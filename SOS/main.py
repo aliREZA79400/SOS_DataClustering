@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import time
+import pickle
 
 # Get the parent directory
 parent_dir = os.path.dirname(os.path.realpath("SOS"))
@@ -20,38 +21,38 @@ from SOS.problem import Data_Clustering
 
 parser = argparse.ArgumentParser(description="Runner of Algorithm")
 
-parser.add_argument("k",type=int, help="number of clusters (int)")
+# parser.add_argument("k",type=int, help="number of clusters (int)")
 parser.add_argument("epoch" ,type=int, help="number of itrations(int)")
 parser.add_argument("pop_size",type=int, help="number of population(int)")
 parser.add_argument("times_run",type=int,help="number of times that each dataset runs")
 
 args = parser.parse_args()
 
-def main_runner(k:int , epoch:int ,pop_size:int , times:int):
+def main_runner(epoch:int ,pop_size:int , times:int):
 
     dataset_names = ("Iris_Dataset" , "Breast_Cancer" , "Balance_Scale" , "Seeds" , "Statlog" , "Contraceptive_Method_Choice" , "Haberman_s_Survival", "Wine")
-    
+
+    dataset_k_s = (3,2,3,3,2,3,2,3)
+
     all_results = {}
 
-    for dt_name in dataset_names :
+    for dt_data in zip(dataset_names , dataset_k_s) :
 
         dataset_results = {}
-
-        print(dt_name)
         
         for run in range(times):
             ### define datatset and target
 
-            dataset , target = datasets.retu_dataset(name=dt_name)
+            dataset , target = datasets.retu_dataset(name=dt_data[0])
 
             ### generate bound
 
-            bound = generate_bound.generate(K=k,dataset=dataset)
+            bound = generate_bound.generate(K=dt_data[1],dataset=dataset)
 
             ### define problem with class {log training process}
 
             problem_ins = Data_Clustering(bounds=bound,
-                                        K=k,
+                                        K=dt_data[1],
                                         dataset=dataset)
 
             ### define model parameters dict 
@@ -66,7 +67,7 @@ def main_runner(k:int , epoch:int ,pop_size:int , times:int):
             end_time = time.time()
 
             # save model
-            # saver_model.saver_model(model=model , save_path = os.getcwd()+ "/results" + f"_{dt_name}"+ f"_{run}" +".pkl")
+            saver_model.saver_model(model=model , save_path = os.getcwd()+ "/results" + f"_{dt_data[0]}"+ f"_{run}" +".pkl")
             
             dataset_results[str(run)] = {
                 "solution" : g_best.solution,
@@ -74,8 +75,10 @@ def main_runner(k:int , epoch:int ,pop_size:int , times:int):
                 "elapsed_time" : end_time - start_time
             }
 
-        all_results[dt_name] = dataset_results
-        print(all_results)
+        all_results[dt_data[0]] = dataset_results
+
+    with open("all_results.pkl", "wb") as fp:
+        pickle.dump(all_results, fp)
 
     return all_results
 
@@ -88,7 +91,7 @@ def main_runner(k:int , epoch:int ,pop_size:int , times:int):
 
 if __name__ == "__main__":
 
-    main_runner(k=args.k , epoch=args.epoch,pop_size=args.pop_size,times=args.times_run)
+    main_runner(epoch=args.epoch,pop_size=args.pop_size,times=args.times_run)
 
     # print(f"Solution: {g_best.solution}, Fitness: {g_best.target.fitness}")
     
