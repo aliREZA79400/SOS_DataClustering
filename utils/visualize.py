@@ -78,7 +78,7 @@ class Visualize:
 
 
 
-    def draw_clustered_2D(self):
+    def draw_clustered_2D(self,save_fig = False):
         clutered_list = Visualize.create_clusters(self.K,self.g_best,self.dataset)
         
         # Create a scatter plot
@@ -100,12 +100,13 @@ class Visualize:
 
         # Show the plot
         plt.grid(True)
-        plt.savefig(fname = "Clustered_2D")
+        if save_fig:
+            plt.savefig(fname = "Clustered_2D")
         plt.show()
 
 
 
-    def draw_clustered_3D(self):
+    def draw_clustered_3D(self,save_fig = False):
         clutered_list = Visualize.create_clusters(self.K,self.g_best,self.dataset)
         
         # Create a scatter plot
@@ -130,11 +131,12 @@ class Visualize:
 
         # Show the plot
         plt.grid(True)
-        plt.savefig(fname = "Clustered_3D")
+        if save_fig :
+            plt.savefig(fname = "Clustered_3D")
         plt.show()
 
 
-    def draw_original_data_2D(self):
+    def draw_original_data_2D(self,save_fig = False):
 
         pd_data = pd.DataFrame(self.dataset)
 
@@ -160,12 +162,13 @@ class Visualize:
 
         # Show the plot
         plt.grid(True)
-        plt.savefig(fname = "Original_2D")
+        if save_fig:
+            plt.savefig(fname = "Original_2D")
         plt.show()
 
 
 
-    def draw_original_data_3D(self):
+    def draw_original_data_3D(self,save_fig = False):
 
         pd_data = pd.DataFrame(self.dataset)
         pd_data.insert(self.dataset.shape[1],"target", self.target)
@@ -193,14 +196,15 @@ class Visualize:
 
         # Show the plot
         plt.grid(True)
-        plt.savefig(fname = "Original_3D")
+        if save_fig:
+            plt.savefig(fname = "Original_3D")
         plt.show()
 
-    def draw_all(self):
-        self.draw_clustered_2D()
-        self.draw_original_data_2D()
-        self.draw_clustered_3D()
-        self.draw_original_data_3D()
+    def draw_all(self,save_fig = False):
+        self.draw_clustered_2D(save_fig=save_fig)
+        self.draw_original_data_2D(save_fig=save_fig)
+        self.draw_clustered_3D(save_fig=save_fig)
+        self.draw_original_data_3D(save_fig=save_fig)
                 
                               
                           

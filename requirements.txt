@@ -1,0 +1,8 @@
+python==3.10.12
+mealpy==3.0.1
+numpy==1.26.4
+matplotlib==3.8.3
+scikit-learn==1.4.1.post1
+matplotlib-inline==0.1.6
+pandas==2.2.1
+

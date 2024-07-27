@@ -8,7 +8,7 @@ parent_dir = os.path.dirname(os.path.realpath("utils"))
 # Add the parent directory to sys.path
 sys.path.append(parent_dir)
 
-from utils import validators
+from utils import validators  # noqa: E402
 
 def generate(K:int,dataset:None):
     '''

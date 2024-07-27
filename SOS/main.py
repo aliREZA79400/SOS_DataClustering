@@ -1,8 +1,8 @@
-import os
-import sys
 import argparse
-import time
+import os
 import pickle
+import sys
+import time
 
 # Get the parent directory
 parent_dir = os.path.dirname(os.path.realpath("SOS"))
@@ -12,12 +12,11 @@ sys.path.append(parent_dir)
 parent_dir_ = os.path.dirname(parent_dir)
 sys.path.append(parent_dir_)
 
-import mealpy 
+import mealpy
 import numpy as np
 from mealpy.bio_based import SOS
-
-from utils import datasets , generate_bound , visualize , saver_model
 from SOS.problem import Data_Clustering
+from utils import datasets, generate_bound, saver_model, visualize
 
 parser = argparse.ArgumentParser(description="Runner of Algorithm")
 
@@ -36,21 +35,25 @@ def main_runner(epoch:int ,pop_size:int , times:int):
 
     all_results = {}
 
+    #loop through each dataset
     for dt_data in zip(dataset_names , dataset_k_s) :
 
         dataset_results = {}
         
-        for run in range(times):
-            ### define datatset and target
+        with open(f"{parent_dir_}/Datasets/{dt_data[0]}","rb") as f :
+            dataset = np.load(f)
+            target = np.load(f)
 
-            dataset , target = datasets.retu_dataset(name=dt_data[0])
+        # ### define datatset and target
+        # dataset , target = datasets.retu_dataset(name=dt_data[0])
+        print(dt_data[0])
+
+        for run in range(times):
 
             ### generate bound
-
             bound = generate_bound.generate(K=dt_data[1],dataset=dataset)
 
             ### define problem with class {log training process}
-
             problem_ins = Data_Clustering(bounds=bound,
                                         K=dt_data[1],
                                         dataset=dataset)
@@ -58,7 +61,6 @@ def main_runner(epoch:int ,pop_size:int , times:int):
             ### define model parameters dict 
 
             ### build model (instance)
-
             model = SOS.OriginalSOS(epoch=epoch,pop_size=pop_size)
 
             ### train model  with solve ( training modes )

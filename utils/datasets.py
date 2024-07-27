@@ -110,3 +110,12 @@ def retu_dataset(name:str):
             return  datasets.load_wine(return_X_y=True)
 
     print("dataset name is invalid")
+
+
+def pre_process():
+    #PCA
+    #Standard range
+    pass
+
+def feature_selection():
+    pass
